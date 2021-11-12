@@ -15,8 +15,12 @@ export function ForbidIf(
       target: object.constructor,
       propertyName: propertyName,
       constraints: [condition],
-      validationOptions: validationOptions,
-      defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must not be inserted', validationOptions),
+      validationOptions: {
+        ...validationOptions,
+        message:
+          validationOptions?.message ||
+          buildMessage(eachPrefix => eachPrefix + '$property must not be inserted', validationOptions),
+      },
     };
     getMetadataStorage().addValidationMetadata(new ValidationMetadata(args));
   };
