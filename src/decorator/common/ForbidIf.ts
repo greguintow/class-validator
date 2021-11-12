@@ -12,7 +12,7 @@ export function ForbidIf(
       name: ValidationTypes.BLOCK_VALIDATION,
       constraints: [condition],
       validator: {
-        validate: (value: any, args: ValidationArguments) => condition(args.object, value) && value != null,
+        validate: (value: any, args: ValidationArguments) => condition(args.object, value) && value == null,
         defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must not be inserted', validationOptions),
       },
     },
