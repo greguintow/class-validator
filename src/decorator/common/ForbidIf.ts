@@ -1,27 +1,21 @@
 import { ValidationOptions } from '../ValidationOptions';
-import { ValidationMetadataArgs } from '../../metadata/ValidationMetadataArgs';
 import { ValidationTypes } from '../../validation/ValidationTypes';
-import { ValidationMetadata } from '../../metadata/ValidationMetadata';
-import { getMetadataStorage } from '../../metadata/MetadataStorage';
-import { buildMessage } from './ValidateBy';
+import { buildMessage, ValidateBy } from './ValidateBy';
+import { ValidationArguments } from '../../validation/ValidationArguments';
 
 export function ForbidIf(
   condition: (object: any, value: any) => boolean,
   validationOptions?: ValidationOptions
 ): PropertyDecorator {
-  return function (object: object, propertyName: string): void {
-    const args: ValidationMetadataArgs = {
-      type: ValidationTypes.BLOCK_VALIDATION,
-      target: object.constructor,
-      propertyName: propertyName,
+  return ValidateBy(
+    {
+      name: ValidationTypes.BLOCK_VALIDATION,
       constraints: [condition],
-      validationOptions: {
-        ...validationOptions,
-        message:
-          validationOptions?.message ||
-          buildMessage(eachPrefix => eachPrefix + '$property must not be inserted', validationOptions),
+      validator: {
+        validate: (value: any, args: ValidationArguments) => condition(args.object, value) && value != null,
+        defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must not be inserted', validationOptions),
       },
-    };
-    getMetadataStorage().addValidationMetadata(new ValidationMetadata(args));
-  };
+    },
+    validationOptions
+  );
 }
