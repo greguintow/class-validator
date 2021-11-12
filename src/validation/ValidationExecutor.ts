@@ -182,17 +182,17 @@ export class ValidationExecutor {
     const validationError = this.generateValidationError(object, value, propertyName);
     validationErrors.push(validationError);
 
-    const canValidate = this.conditionalValidations(object, value, conditionalValidationMetadatas);
-    if (!canValidate) {
-      return;
-    }
-
     const shouldBlock =
       blockersValidationMetadatas.length > 0 && this.conditionalValidations(object, value, blockersValidationMetadatas);
 
     if (shouldBlock && value != null) {
       this.customValidations(object, value, blockersValidationMetadatas, validationError);
       this.mapContexts(object, value, blockersValidationMetadatas, validationError);
+      return;
+    }
+
+    const canValidate = this.conditionalValidations(object, value, conditionalValidationMetadatas);
+    if (!canValidate) {
       return;
     }
 

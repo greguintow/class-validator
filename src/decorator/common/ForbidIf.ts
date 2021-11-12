@@ -3,6 +3,7 @@ import { ValidationMetadataArgs } from '../../metadata/ValidationMetadataArgs';
 import { ValidationTypes } from '../../validation/ValidationTypes';
 import { ValidationMetadata } from '../../metadata/ValidationMetadata';
 import { getMetadataStorage } from '../../metadata/MetadataStorage';
+import { buildMessage } from './ValidateBy';
 
 export function ForbidIf(
   condition: (object: any, value: any) => boolean,
@@ -15,6 +16,7 @@ export function ForbidIf(
       propertyName: propertyName,
       constraints: [condition],
       validationOptions: validationOptions,
+      defaultMessage: buildMessage(eachPrefix => eachPrefix + '$property must not be inserted', validationOptions),
     };
     getMetadataStorage().addValidationMetadata(new ValidationMetadata(args));
   };
