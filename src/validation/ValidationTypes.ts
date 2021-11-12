@@ -7,6 +7,7 @@ export class ValidationTypes {
   static NESTED_VALIDATION = 'nestedValidation'; // done
   static PROMISE_VALIDATION = 'promiseValidation'; // done
   static CONDITIONAL_VALIDATION = 'conditionalValidation'; // done
+  static BLOCK_VALIDATION = 'blockValidation'; // done
   static WHITELIST = 'whitelistValidation'; // done
   static IS_DEFINED = 'isDefined'; // done
 
