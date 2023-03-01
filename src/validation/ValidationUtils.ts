@@ -8,6 +8,10 @@ export function constraintToString(constraint: unknown): string {
     return constraint.join(', ');
   }
 
+  if (typeof constraint === 'symbol') {
+    constraint = constraint.description;
+  }
+
   return `${constraint}`;
 }
 
@@ -36,7 +40,7 @@ export class ValidationUtils {
       messageString &&
       validationArguments.value !== undefined &&
       validationArguments.value !== null &&
-      typeof validationArguments.value === 'string'
+      ['string', 'boolean', 'number'].includes(typeof validationArguments.value)
     )
       messageString = messageString.replace(/\$value/g, validationArguments.value);
     if (messageString) messageString = messageString.replace(/\$property/g, validationArguments.property);
